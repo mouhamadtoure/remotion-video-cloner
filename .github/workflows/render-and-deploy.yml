@@ -1,0 +1,122 @@
+name: 🎬 Render & Deploy Preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+  workflow_dispatch:
+    inputs:
+      composition:
+        description: 'ID de la composition à rendre'
+        required: false
+        default: 'Scene'
+
+jobs:
+  render:
+    name: Render vidéo + déployer
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── 2. Node.js ───────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ── 3. ffmpeg ────────────────────────────────────────────
+      - name: Install ffmpeg
+        run: sudo apt-get install -y ffmpeg
+
+      # ── 4. Dependencies ──────────────────────────────────────
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      # ── 5. Render ────────────────────────────────────────────
+      - name: Render composition
+        run: |
+          COMP="${{ github.event.inputs.composition || 'Scene' }}"
+          mkdir -p out
+          npx remotion render src/index.ts "$COMP" out/video.mp4 \
+            --codec h264 \
+            --log error \
+            --concurrency 2
+          echo "✅ Vidéo rendue : $(du -sh out/video.mp4 | cut -f1)"
+
+      # ── 6. Upload artifact ───────────────────────────────────
+      - name: Upload vidéo rendue
+        uses: actions/upload-artifact@v4
+        with:
+          name: remotion-render-${{ github.run_number }}
+          path: out/video.mp4
+          retention-days: 30
+
+      # ── 7. Créer page preview statique ───────────────────────
+      - name: Créer page de preview
+        run: |
+          mkdir -p dist
+          cp out/video.mp4 dist/video.mp4
+          cat > dist/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="fr">
+          <head>
+            <meta charset="UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>🎬 Remotion Preview</title>
+            <style>
+              *{margin:0;padding:0;box-sizing:border-box}
+              body{min-height:100vh;background:#0a0a0a;display:flex;flex-direction:column;
+                align-items:center;justify-content:center;font-family:Inter,system-ui,sans-serif;
+                color:#fff;padding:40px 20px;gap:24px}
+              h1{font-size:28px;font-weight:700;letter-spacing:-.5px}
+              p{color:#666;font-size:14px;margin-top:8px;text-align:center}
+              .wrap{border-radius:16px;overflow:hidden;
+                box-shadow:0 0 80px rgba(99,102,241,0.3);
+                border:1px solid rgba(255,255,255,0.08);width:min(900px,90vw)}
+              video{width:100%;display:block}
+              .meta{color:#444;font-size:12px}
+            </style>
+          </head>
+          <body>
+            <div style="text-align:center">
+              <h1>🎬 Remotion Preview</h1>
+              <p>video-cloner · render #${{ github.run_number }} · ${{ github.sha }}</p>
+            </div>
+            <div class="wrap">
+              <video controls loop autoplay muted src="video.mp4"></video>
+            </div>
+            <p class="meta">
+              Commit : ${{ github.sha }} · Branch : ${{ github.ref_name }}
+            </p>
+          </body>
+          </html>
+          EOF
+          echo "✅ Page preview créée"
+
+      # ── 8. Deploy sur GitHub Pages ───────────────────────────
+      - name: Deploy sur GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          commit_message: "🎬 Render #${{ github.run_number }} — ${{ github.sha }}"
+
+      # ── 9. Résumé ────────────────────────────────────────────
+      - name: Résumé
+        run: |
+          echo "════════════════════════════════════════════"
+          echo "✅ RENDU ET DÉPLOYÉ"
+          echo ""
+          echo "🔗 Voir la vidéo :"
+          echo "   https://mouhamadtoure.github.io/remotion-video-cloner/"
+          echo ""
+          echo "📥 Télécharger :"
+          echo "   GitHub Actions → Artifacts → remotion-render-${{ github.run_number }}"
+          echo "════════════════════════════════════════════"

@@ -15,9 +15,11 @@ npm run setup   # installe ffmpeg + yt-dlp + npm install
 npm run analyze -- https://url-de-la-video
 ```
 
-### Si l'utilisateur donne un fichier local :
+### Si l'utilisateur donne un fichier local → le rendre accessible via URL :
 ```bash
-npm run analyze -- /chemin/vers/video.mp4
+npm run share -- /chemin/vers/video.mp4
+# → génère une URL publique temporaire (14 jours) → utilise cette URL pour analyser
+npm run analyze -- https://url-generee-par-share
 ```
 
 Le script génère :
@@ -29,12 +31,33 @@ Lis chaque frame et génère le projet Remotion complet. Voir les détails ci-de
 
 ## Commandes
 ```bash
-npm run setup    # Setup environnement complet
-npm run analyze  # Analyser une vidéo (passer l'URL/chemin en argument)
-npm run dev      # Remotion Studio → localhost:3000
-npm run render   # Rendre en MP4
-npm run build    # Bundle production
+npm run setup          # Setup environnement complet (ffmpeg + yt-dlp + npm install)
+npm run share          # Uploader vidéo locale → URL publique (pour Codex)
+npm run analyze        # Analyser une vidéo URL ou locale → frames + rapport
+npm run dev            # Remotion Studio → localhost:3000
+npm run render         # Rendre en MP4 → out/video.mp4
+npm run preview        # Rendre + uploader + donner URL de visualisation
+npm run open-preview   # Ouvrir preview.html (après npm run render)
+npm run build          # Bundle production
 ```
+
+## Visualiser la vidéo rendue
+
+### Option 1 — Local (Claude Code / Cursor)
+```bash
+npm run dev          # Remotion Studio live → localhost:3000
+npm run render       # Génère out/video.mp4
+npm run open-preview # Ouvre preview.html dans le navigateur
+```
+
+### Option 2 — URL partageable (Codex / partage)
+```bash
+npm run preview      # Rend + uploade → donne URL publique valable 14 jours
+```
+
+### Option 3 — En ligne permanent (GitHub Pages)
+Chaque push sur main déclenche automatiquement le rendu et le déploiement.
+URL de visualisation : https://mouhamadtoure.github.io/remotion-video-cloner/
 
 ## Packages installés (26 total)
 

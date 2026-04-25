@@ -9,7 +9,10 @@
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",
     "setup": "bash scripts/codex-setup.sh",
-    "analyze": "bash scripts/analyze-video.sh"
+    "analyze": "bash scripts/analyze-video.sh",
+    "share": "bash scripts/share-video.sh",
+    "preview": "bash scripts/render-and-preview.sh",
+    "open-preview": "open preview.html"
   },
   "repository": {},
   "license": "UNLICENSED",
