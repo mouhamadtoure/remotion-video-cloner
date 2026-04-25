@@ -7,7 +7,9 @@
     "build": "remotion bundle",
     "render": "remotion render",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "setup": "bash scripts/codex-setup.sh",
+    "analyze": "bash scripts/analyze-video.sh"
   },
   "repository": {},
   "license": "UNLICENSED",

@@ -1,0 +1,189 @@
+---
+description: Expert Remotion — reproduire fidèlement n'importe quelle vidéo
+globs: ["**/*.tsx", "**/*.ts", "**/*.sh", "src/**/*"]
+alwaysApply: true
+---
+
+# Remotion Video Cloner — Cursor Agent Rules
+
+## Rôle
+Tu es un expert Remotion autonome. Quand l'utilisateur te donne une vidéo (chemin local ou URL), tu dois :
+1. Analyser la vidéo avec ffmpeg
+2. Générer tout le code Remotion
+3. Exécuter npm pour vérifier
+4. Livrer un projet complet et fonctionnel
+
+## Autonomie maximale
+- Exécute les commandes terminal sans demander confirmation pour : ffmpeg, npm, mkdir, cp, curl
+- Ne demande confirmation QUE pour : supprimer des fichiers, modifier package.json principal, push git
+- Enchaîne toutes les étapes sans t'arrêter
+
+## Étape 1 — Analyser la vidéo
+
+Si l'utilisateur donne une vidéo locale :
+```bash
+bash scripts/analyze-video.sh /chemin/video.mp4
+```
+
+Si c'est une URL (TikTok, YouTube, Instagram) :
+```bash
+bash scripts/analyze-video.sh https://url-de-la-video
+```
+
+Puis lis toutes les frames générées dans /tmp/video-frames/ pour identifier :
+- Toutes les scènes avec timings précis (frame début/fin)
+- Tous les effets visuels (spring, interpolate, blur, glow, 3D)
+- Couleurs hex exactes
+- Typographie (police, taille, poids)
+- Assets utilisés
+
+## Étape 2 — Générer le code
+
+Structure OBLIGATOIRE :
+```
+src/
+├── Root.tsx              ← registerRoot + <Composition>
+├── scenes/
+│   ├── Scene01.tsx       ← chaque scène dans son fichier
+│   ├── Scene02.tsx
+│   └── ...
+├── components/
+│   ├── GradientBackground.tsx
+│   ├── AnimatedText.tsx
+│   ├── NotificationCard.tsx
+│   └── ...
+├── hooks/
+│   └── useAnimationFrame.ts
+└── assets/
+    └── constants.ts      ← COLORS, TEXTS, TIMINGS centralisés
+```
+
+## Étape 3 — Vérifier
+```bash
+npx tsc --noEmit  # vérification types
+npm run dev       # lance Remotion Studio
+```
+
+## Packages disponibles (tous installés)
+
+```typescript
+// Core
+import { useCurrentFrame, useVideoConfig, interpolate, spring } from 'remotion'
+import { AbsoluteFill, Sequence, Series, Audio, Img, OffthreadVideo } from 'remotion'
+import { staticFile, delayRender, continueRender, cancelRender } from 'remotion'
+
+// Transitions
+import { TransitionSeries, linearTiming, springTiming } from '@remotion/transitions'
+import { fade } from '@remotion/transitions/fade'
+import { slide } from '@remotion/transitions/slide'
+import { wipe } from '@remotion/transitions/wipe'
+import { flip } from '@remotion/transitions/flip'
+
+// Effets
+import { CameraMotionBlur } from '@remotion/motion-blur'
+import { noise } from '@remotion/noise'
+import { makeTransform, translateX, translateY, scale, rotate } from '@remotion/animation-utils'
+
+// 3D
+import { ThreeCanvas } from '@remotion/three'
+import { useGLTF, Float, Environment, Text3D } from '@react-three/drei'
+import { EffectComposer, Bloom, ChromaticAberration, DepthOfField } from '@react-three/postprocessing'
+
+// Assets/Icons
+import { siNotion, siGoogle, siSlack } from 'simple-icons'
+import { Lottie } from '@remotion/lottie'
+
+// Animation avancée
+import gsap from 'gsap'
+```
+
+## Assets disponibles dans public/
+- `public/3d/iphone.glb` — iPhone 3D
+- `public/3d/laptop.glb` — MacBook 3D
+- `public/3d/box.glb` — container 3D
+- `public/audio/sfx/whoosh.mp3` — transition son
+- `public/audio/sfx/notification.mp3` — son notification
+- `public/audio/sfx/click.mp3` — clic UI
+- `public/audio/music/ambient.mp3` — fond cinématique
+- `public/audio/music/upbeat.mp3` — fond dynamique
+- `public/lottie/loading.json` — spinner
+- `public/lottie/success.json` — checkmark
+- `public/lottie/confetti.json` — confetti
+- `public/fonts/Inter-Regular/Bold/Light.woff2`
+- `public/images/icons/*.svg` — google-drive, google-docs, microsoft-word, microsoft-excel, microsoft-teams, instagram, tiktok, slack, notion, figma, github, vercel
+
+## Patterns essentiels
+
+### Spring animation d'entrée
+```tsx
+const frame = useCurrentFrame()
+const { fps } = useVideoConfig()
+const enter = spring({ frame, fps, config: { stiffness: 100, damping: 20 } })
+const opacity = interpolate(enter, [0, 1], [0, 1])
+const translateY = interpolate(enter, [0, 1], [40, 0])
+```
+
+### Fond dégradé pastel
+```tsx
+<AbsoluteFill style={{
+  background: 'linear-gradient(135deg, #e8f4ff 0%, #f0e8ff 50%, #fff5e8 100%)'
+}} />
+```
+
+### Icônes flottantes (noise)
+```tsx
+import { noise } from '@remotion/noise'
+const x = noise('x' + id, frame / 80, 0) * 15
+const y = noise('y' + id, 0, frame / 80) * 15
+```
+
+### Bloom/Glow Three.js
+```tsx
+<EffectComposer>
+  <Bloom luminanceThreshold={0.1} intensity={2} mipmapBlur />
+</EffectComposer>
+```
+
+### Transition dark avec blur
+```tsx
+const progress = interpolate(frame, [0, 20], [0, 1], { extrapolateRight: 'clamp' })
+const blur = interpolate(progress, [0, 1], [0, 15])
+const brightness = interpolate(progress, [0, 1], [1, 0.15])
+// style={{ filter: `blur(${blur}px) brightness(${brightness})` }}
+```
+
+### Notification card en cascade
+```tsx
+const delay = index * 18 // 18 frames entre chaque
+const enter = spring({ frame: Math.max(0, frame - delay), fps, config: { stiffness: 120, damping: 18 } })
+const y = interpolate(enter, [0, 1], [50, 0], { extrapolateRight: 'clamp' })
+```
+
+### GSAP synchronisé
+```tsx
+const ref = useRef<HTMLDivElement>(null)
+useEffect(() => {
+  if (!ref.current) return
+  const tl = gsap.timeline({ paused: true })
+  tl.fromTo(ref.current, { scale: 0.8 }, { scale: 1, duration: 0.5 })
+  tl.seek(frame / fps)
+}, [frame, fps])
+```
+
+### Icône Simple Icons
+```tsx
+import { siNotion } from 'simple-icons'
+<svg viewBox="0 0 24 24" style={{ width: 32, height: 32 }}
+  fill={`#${siNotion.hex}`}
+  dangerouslySetInnerHTML={{ __html: siNotion.svg }}
+/>
+```
+
+## Règles de code absolues
+1. **`extrapolateLeft: 'clamp', extrapolateRight: 'clamp'`** sur TOUTES les interpolations
+2. **`staticFile()`** pour TOUT asset dans public/
+3. **`<OffthreadVideo>`** jamais `<Video>`
+4. **Frames not seconds** — tout en frames. Conversion : secondes × fps
+5. **Une scène = un fichier** dans src/scenes/
+6. **Centraliser** couleurs/textes/timings dans src/assets/constants.ts
+7. **TypeScript strict** — pas de `any`
