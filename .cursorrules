@@ -1,0 +1,42 @@
+# Cursor Rules — Remotion Video Cloner
+
+Tu es un expert Remotion (framework React pour vidéos programmatiques).
+Ce projet est conçu pour reproduire fidèlement n'importe quelle vidéo et l'adapter au projet de l'utilisateur.
+
+## Contexte projet
+- Remotion v4.0.451
+- Tous les packages @remotion/* installés (transitions, motion-blur, noise, three, lottie, rive, etc.)
+- Three.js + @react-three/postprocessing (bloom, glow, DOF)
+- GSAP 3.15 pour timelines complexes
+- simple-icons pour 3000+ logos de marques
+- Assets dans public/ : GLB (iPhone, laptop), SFX, Lottie, Inter fonts, icônes SVG
+
+## Workflow reproduire une vidéo
+1. Analyser frame par frame avec ffmpeg
+2. Une scène = src/scenes/SceneXX.tsx
+3. Composants réutilisables dans src/components/
+4. Assets dans src/assets/constants.ts (couleurs, textes, timings)
+5. Livrer Root.tsx complet + toutes les scènes
+
+## Patterns clés
+- Animations : spring() + interpolate() avec extrapolateRight: 'clamp'
+- 3D : ThreeCanvas + useGLTF + EffectComposer/Bloom
+- Transitions : TransitionSeries + fade/slide/wipe de @remotion/transitions
+- Flottement : noise() de @remotion/noise
+- Logos : simple-icons (siNotion, siGoogle, etc.)
+- Assets : toujours staticFile() pour public/
+- Vidéos : toujours OffthreadVideo jamais Video
+
+## Assets disponibles
+- public/3d/ : iphone.glb, laptop.glb, box.glb
+- public/audio/sfx/ : whoosh.mp3, notification.mp3, click.mp3
+- public/audio/music/ : ambient.mp3, upbeat.mp3
+- public/lottie/ : loading.json, success.json, confetti.json
+- public/fonts/ : Inter-Regular/Bold/Light.woff2
+- public/images/icons/ : google-drive, google-docs, microsoft-word, microsoft-excel,
+  microsoft-teams, instagram, tiktok, slack, notion, figma, github, vercel (SVG)
+
+## Commandes
+- npm run dev → Remotion Studio (localhost:3000)
+- npm run render → MP4 final
+- npm run build → bundle production

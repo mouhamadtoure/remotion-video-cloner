@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remotion Preview</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: Inter, system-ui, sans-serif;
+      color: #fff;
+      padding: 40px 20px;
+      gap: 24px;
+    }
+    h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    p { color: #666; font-size: 14px; margin-top: 8px; }
+    .player-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(99,102,241,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      width: min(900px, 90vw);
+    }
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+    }
+    .info {
+      color: #555;
+      font-size: 13px;
+      text-align: center;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    code {
+      background: #1a1a1a;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #a78bfa;
+    }
+  </style>
+</head>
+<body>
+  <div style="text-align:center">
+    <h1>🎬 Remotion Preview</h1>
+    <p>video-cloner — aperçu local</p>
+  </div>
+
+  <div class="player-wrap">
+    <video id="player" controls loop src="out/video.mp4">
+      La vidéo n'est pas encore rendue. Lance : <code>npm run render</code>
+    </video>
+  </div>
+
+  <div class="info">
+    <p>
+      Ce fichier ouvre ta vidéo rendue localement.<br/>
+      Pour générer la vidéo : <code>npm run render</code><br/>
+      Pour le studio live : <code>npm run dev</code>
+    </p>
+  </div>
+
+  <script>
+    const video = document.getElementById('player')
+    video.onerror = () => {
+      video.insertAdjacentHTML('afterend',
+        '<p style="color:#ef4444;margin-top:16px">⚠️ Vidéo pas encore rendue — lance <code>npm run render</code> puis recharge cette page.</p>'
+      )
+    }
+  </script>
+</body>
+</html>
