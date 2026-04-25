@@ -1,0 +1,48 @@
+{
+  "name": "video-cloner",
+  "version": "1.0.0",
+  "description": "Remotion — Video Cloner & Adapter complet",
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion bundle",
+    "render": "remotion render",
+    "upgrade": "remotion upgrade",
+    "lint": "eslint src && tsc"
+  },
+  "repository": {},
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@react-three/drei": "10.7.7",
+    "@react-three/fiber": "9.2.0",
+    "@remotion/animation-utils": "4.0.451",
+    "@remotion/captions": "4.0.451",
+    "@remotion/cli": "4.0.451",
+    "@remotion/google-fonts": "4.0.451",
+    "@remotion/lottie": "4.0.451",
+    "@remotion/media": "4.0.451",
+    "@remotion/media-utils": "4.0.451",
+    "@remotion/motion-blur": "4.0.451",
+    "@remotion/noise": "4.0.451",
+    "@remotion/paths": "4.0.451",
+    "@remotion/shapes": "4.0.451",
+    "@remotion/three": "4.0.451",
+    "@remotion/transitions": "4.0.451",
+    "@remotion/zod-types": "4.0.451",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.451",
+    "three": "0.178.0",
+    "zod": "4.3.6",
+    "mediabunny": "1.39.2"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.451",
+    "@types/react": "19.2.7",
+    "@types/three": "0.170.0",
+    "@types/web": "0.0.166",
+    "eslint": "9.19.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "private": true
+}
