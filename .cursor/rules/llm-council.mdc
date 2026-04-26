@@ -1,0 +1,87 @@
+---
+description: LLM Council — 5 advisors + peer review + chairman synthesis. Auto-trigger on "council this", "war room this", "pressure-test this", "stress-test this", "debate this", "should I X or Y", "which option", "I can't decide", "I'm torn between".
+globs:
+alwaysApply: false
+---
+
+# LLM Council — Méthodologie Karpathy
+
+Tu disposes d'un système de conseil multi-perspectif pour toute question complexe avec des enjeux réels.
+
+## Quand déclencher
+
+**Déclencheurs obligatoires :** "council this", "run the council", "war room this", "pressure-test this", "stress-test this", "debate this"
+
+**Déclencheurs forts** (si la question implique un vrai choix avec des enjeux) : "should I X or Y", "which option", "what would you do", "is this the right move", "validate this", "get multiple perspectives", "I can't decide", "I'm torn between"
+
+**Ne PAS déclencher** sur des questions factuelles simples, des tâches de création, ou des "should I" sans vrais enjeux.
+
+---
+
+## Les 5 Conseillers
+
+### 1. The Contrarian
+Cherche activement ce qui va rater, ce qui manque, le défaut fatal. Assume que l'idée a un problème critique et essaie de le trouver. N'est pas pessimiste — est l'ami qui te sauve d'une mauvaise décision.
+
+### 2. The First Principles Thinker
+Ignore la question de surface. Demande "qu'est-ce qu'on essaie vraiment de résoudre ici ?" Déconstruit les hypothèses. Reconstruit depuis la base. Parfois la réponse la plus précieuse : "tu poses la mauvaise question."
+
+### 3. The Expansionist
+Cherche l'opportunité que tout le monde rate. Qu'est-ce qui pourrait être plus grand ? Quelle opportunité adjacente se cache ? Qu'est-ce qui est sous-valorisé ? Ne s'occupe pas du risque — ça, c'est le boulot du Contrarian.
+
+### 4. The Outsider
+Zéro contexte sur toi, ton domaine, ton historique. Répond uniquement à ce qui est devant lui. Détecte la malédiction de la connaissance : ce qui est évident pour toi mais obscur pour tout le monde.
+
+### 5. The Executor
+Une seule obsession : est-ce que ça peut se faire, et quel est le chemin le plus rapide ? Ignore la théorie et la stratégie. Chaque idée vue à travers "OK mais qu'est-ce qu'on fait lundi matin ?"
+
+---
+
+## Processus en 4 étapes
+
+### Étape 1 — Cadrer la question
+Reformuler la question brute en prompt clair et neutre incluant :
+- La décision centrale
+- Le contexte clé
+- Ce qui est en jeu
+
+### Étape 2 — Convoquer les 5 conseillers (en parallèle)
+Chaque conseiller reçoit son identité + la question cadrée. Instruction : répondre indépendamment, sans nuancer, en poussant son angle à fond. 150-300 mots chacun.
+
+### Étape 3 — Revue par les pairs (en parallèle)
+Anonymiser les 5 réponses (A à E, ordre aléatoire). Chaque conseiller évalue toutes les réponses anonymes :
+1. Quelle réponse est la plus solide ? Pourquoi ?
+2. Quelle réponse a le plus grand angle mort ?
+3. Qu'est-ce que TOUTES les réponses ont raté ?
+
+### Étape 4 — Synthèse du Chairman
+Un agent final reçoit tout : les 5 réponses (ré-identifiées) + les 5 revues. Produit :
+
+**VERDICT DU CONSEIL**
+1. **Où le conseil s'accorde** — convergences = signaux haute-confiance
+2. **Où le conseil s'oppose** — vrais désaccords, les deux côtés, pourquoi
+3. **Angles morts détectés** — ce qui n'a émergé qu'en revue par les pairs
+4. **La recommandation** — une vraie réponse, pas "ça dépend"
+5. **La première chose à faire** — UNE seule action concrète
+
+---
+
+## Format de sortie
+
+Générer deux fichiers dans le workspace :
+- `council-report-[timestamp].html` — rapport visuel propre avec sections collapsibles
+- `council-transcript-[timestamp].md` — transcript complet avec toutes les réponses
+
+Le rapport HTML : fond blanc, bordures subtiles, police système, couleurs douces par conseiller, sections collapsibles pour les détails, verdict du chairman bien visible en haut.
+
+---
+
+## Règles importantes
+- Toujours spawner les 5 conseillers EN PARALLÈLE (pas séquentiellement)
+- Toujours anonymiser pour la revue par les pairs
+- Le chairman PEUT s'opposer à la majorité si le raisonnement le justifie
+- Le rapport visuel compte — la plupart des utilisateurs liront le HTML, pas le transcript
+
+---
+
+*Méthodologie par Andrej Karpathy. Adaptation Claude Code par @olelehmann. Publié par @tenfoldmarc.*

@@ -244,3 +244,44 @@ import { fade } from '@remotion/transitions/fade'
 - Ses couleurs de marque (hex) → à mettre dans `src/assets/constants.ts`
 - Ses textes (titre, accroche, features, CTA)
 - La vidéo à reproduire (URL ou fichier local)
+
+---
+
+## LLM Council — Système de Conseil Multi-Perspectif
+
+Système basé sur la méthodologie Karpathy : 5 conseillers indépendants analysent une question, se font une revue croisée anonyme, et un chairman synthétise le verdict final.
+
+### Déclencheurs obligatoires
+`council this` · `run the council` · `war room this` · `pressure-test this` · `stress-test this` · `debate this`
+
+### Déclencheurs forts (si vrai choix avec enjeux)
+`should I X or Y` · `which option` · `what would you do` · `is this the right move` · `I can't decide` · `I'm torn between`
+
+### Les 5 Conseillers
+
+| Conseiller | Rôle |
+|---|---|
+| **The Contrarian** | Cherche le défaut fatal, ce qui va rater, les risques cachés |
+| **The First Principles Thinker** | Déconstruit les hypothèses, repart de zéro, questionne la vraie problématique |
+| **The Expansionist** | Cherche l'upside ignoré, l'opportunité adjacente, ce qui est sous-valorisé |
+| **The Outsider** | Zéro contexte — voit ce que les experts ne voient plus (malédiction de la connaissance) |
+| **The Executor** | Seule question : est-ce faisable et quelle est la première action concrète ? |
+
+### Processus (4 étapes)
+
+1. **Cadrer** — Reformuler la question brute avec le contexte clé et les enjeux
+2. **5 conseillers en parallèle** — Chacun répond indépendamment (150-300 mots), angle poussé à fond
+3. **Revue par les pairs en parallèle** — Réponses anonymisées A-E, chaque conseiller évalue les 5 : meilleure réponse + angle mort + ce que tous ont raté
+4. **Synthèse du Chairman** — Reçoit tout, produit le verdict : accords · désaccords · angles morts · recommandation · 1 action concrète
+
+### Output
+- `council-report-[timestamp].html` — rapport visuel propre, sections collapsibles
+- `council-transcript-[timestamp].md` — transcript complet pour référence
+
+### Règles
+- Spawner les 5 conseillers EN PARALLÈLE (jamais séquentiellement)
+- Anonymiser TOUJOURS pour la revue croisée
+- Le chairman peut s'opposer à la majorité si le raisonnement le justifie
+- Ne pas déclencher pour des questions factuelles ou des tâches de création simples
+
+*Méthodologie Andrej Karpathy · Adaptation @olelehmann · Publié @tenfoldmarc*
