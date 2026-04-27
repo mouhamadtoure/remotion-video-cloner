@@ -1,0 +1,91 @@
+---
+description: Impeccable — Design langage expert pour interfaces frontend production-grade. Utiliser quand l'utilisateur veut designer, redesigner, critiquer, auditer, polir, clarifier, distiller, durcir, optimiser, adapter, animer, coloriser ou améliorer une interface. Couvre sites web, landing pages, dashboards, UI produit, composants, formulaires, onboarding, états vides. Aussi pour designs ternes qui doivent devenir plus forts, ou designs agressifs qui doivent s'adoucir.
+globs:
+alwaysApply: false
+---
+
+# Impeccable — Frontend Design Expert
+
+Code production-grade réel, choix de design assumés, artisanat exceptionnel.
+
+## Setup obligatoire (non-négociable)
+
+```bash
+node .claude/skills/impeccable/scripts/load-context.mjs
+```
+
+Deux fichiers à la racine du projet :
+- **PRODUCT.md** — requis. Utilisateurs, marque, ton, anti-références, principes stratégiques
+- **DESIGN.md** — optionnel mais fortement recommandé. Couleurs, typographie, composants
+
+Si PRODUCT.md manque → lancer `/impeccable teach` d'abord.
+
+## Registre de design
+Identifier AVANT de designer :
+- **brand** : marketing, landing, campagne — le design EST le produit
+- **product** : app, admin, dashboard, outil — le design SERT le produit
+
+## Commandes disponibles
+
+| Commande | Catégorie | Description |
+|----------|-----------|-------------|
+| `craft [feature]` | Build | Shaper puis construire une feature end-to-end |
+| `shape [feature]` | Build | Planifier UX/UI avant d'écrire du code |
+| `teach` | Build | Créer PRODUCT.md et DESIGN.md |
+| `document` | Build | Générer DESIGN.md depuis le code existant |
+| `extract [target]` | Build | Extraire tokens et composants en design system |
+| `critique [target]` | Évaluer | Revue UX avec scoring heuristique |
+| `audit [target]` | Évaluer | Checks qualité (a11y, perf, responsive) |
+| `polish [target]` | Affiner | Passe qualité finale avant ship |
+| `bolder [target]` | Affiner | Amplifier un design trop sage ou fade |
+| `quieter [target]` | Affiner | Adoucir un design trop agressif |
+| `distill [target]` | Affiner | Réduire à l'essentiel, supprimer la complexité |
+| `harden [target]` | Affiner | Production-ready : erreurs, i18n, edge cases |
+| `animate [target]` | Enrichir | Ajouter des animations et du motion purposeful |
+| `colorize [target]` | Enrichir | Ajouter de la couleur stratégique à une UI monochrome |
+| `typeset [target]` | Enrichir | Améliorer la hiérarchie typo et les fonts |
+| `layout [target]` | Enrichir | Corriger spacing, rythme, hiérarchie visuelle |
+| `delight [target]` | Enrichir | Ajouter de la personnalité et des touches mémorables |
+| `overdrive [target]` | Enrichir | Pousser au-delà des limites conventionnelles |
+| `clarify [target]` | Fix | Améliorer copy UX, labels, messages d'erreur |
+| `adapt [target]` | Fix | Adapter pour différents devices et tailles d'écran |
+| `optimize [target]` | Fix | Diagnostiquer et corriger les performances UI |
+| `live` | Itérer | Mode variantes visuelles : sélectionner des éléments dans le browser |
+
+## Lois de design partagées
+
+### Couleur (OKLCH)
+- Ne jamais utiliser `#000` ou `#fff` — teinter chaque neutre vers la teinte de marque
+- Choisir une **stratégie couleur** : Restrained (1 accent ≤10%) / Committed (30-60%) / Full palette / Drenched
+- Dark vs light n'est JAMAIS un défaut — écrire 1 phrase de scène physique pour forcer le choix
+
+### Typographie
+- Corps : 65-75ch max
+- Hiérarchie : scale + weight contrast (ratio ≥1.25 entre steps)
+
+### Layout
+- Varier le spacing pour le rythme — même padding partout = monotonie
+- Les cards sont la réponse paresseuse — ne les utiliser que quand c'est vraiment le meilleur affordance
+- Cards imbriquées = TOUJOURS faux
+
+### Motion
+- Ne pas animer les propriétés CSS layout
+- Ease out avec courbes exponentielles (ease-out-quart/quint/expo). Pas de bounce, pas d'elastic
+
+## Interdictions absolues
+- `border-left` ou `border-right` >1px comme accent coloré sur cards/callouts → réécrire
+- `background-clip: text` avec gradient → couleur solide uniquement
+- Glassmorphism décoratif
+- Le template "hero-metric" (grand chiffre + stats + accent gradient) → cliché SaaS
+- Grilles de cards identiques (icon + heading + text répété à l'infini)
+- Modal comme première idée → épuiser les alternatives inline d'abord
+
+## Le test "AI slop"
+Si on peut dire "c'est du code IA" au premier coup d'œil → c'est raté.
+Si le thème et la palette sont devinables depuis le nom de la catégorie seule ("observability → dark blue") → refaire.
+
+## Pin/Unpin un sous-commande
+```bash
+node .claude/skills/impeccable/scripts/pin.mjs pin <commande>
+node .claude/skills/impeccable/scripts/pin.mjs unpin <commande>
+```

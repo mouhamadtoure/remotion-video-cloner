@@ -1,0 +1,90 @@
+---
+description: HyperFrames — HTML-based video composition with GSAP animations. Use when asked to create video compositions, title cards, overlays, captions, voiceovers, audio-reactive visuals, scene transitions, or any HTML-based video content.
+globs:
+alwaysApply: false
+---
+
+# HyperFrames
+
+HTML est la source de vérité pour la vidéo. Une composition est un fichier HTML avec des attributs `data-*` pour le timing, une timeline GSAP pour l'animation, et du CSS pour l'apparence.
+
+## Déclencheurs
+Demandes de créer des compositions vidéo, title cards, animations GSAP, captions synchronisées, narration TTS, visuels audio-réactifs, transitions entre scènes.
+
+## Règles non-négociables
+
+### Visual Identity Gate
+Avant tout HTML de composition, avoir une identité visuelle définie :
+1. `DESIGN.md` existe → le lire, utiliser ses couleurs/fonts/règles exactes
+2. `visual-style.md` existe → appliquer son `style_prompt_full`
+3. L'utilisateur a nommé un style → lire `visual-styles.md` (8 presets : Swiss Pulse, Velvet Standard, Deconstructed, Maximalist Type, Data Drift, Soft Signal, Folk Frequency, Shadow Cut)
+4. Rien → poser 3 questions : mood, dark/light, couleurs/fonts de référence → générer un DESIGN.md
+
+### Layout Before Animation
+1. Identifier le "hero frame" de chaque scène (moment de max visibilité)
+2. CSS statique d'abord — `.scene-content` DOIT remplir la scène : `width: 100%; height: 100%; padding: Npx; display: flex; box-sizing: border-box`
+3. Entrées avec `gsap.from()` (depuis l'état invisible VERS la position CSS)
+4. Sorties avec `gsap.to()` (DEPUIS la position CSS vers l'état invisible)
+5. **JAMAIS** `position: absolute; top: Npx` sur un container de contenu
+
+### Transitions de scènes
+- TOUJOURS des transitions entre scènes (pas de jump cuts)
+- TOUJOURS des animations d'entrée sur chaque élément
+- **JAMAIS** d'animations de sortie sauf sur la scène finale
+- La transition EST la sortie — le contenu sortant doit être pleinement visible quand la transition démarre
+
+### Règles absolues
+- **Déterministe** : pas de `Math.random()`, `Date.now()`, ou logique time-based
+- **GSAP** : animer uniquement les propriétés visuelles (opacity, x, y, scale, rotation, color)
+- **Jamais** `repeat: -1` (utiliser `Math.ceil(duration / cycleDuration) - 1`)
+- **Jamais** de timelines dans `async/await/setTimeout/Promise`
+- **Toujours** enregistrer : `window.__timelines["<composition-id>"] = tl`
+- Video : toujours `muted playsinline` + audio séparé `<audio>`
+
+## Attributs data
+
+```html
+<div id="el-1"
+  data-start="0"         <!-- secondes ou ref clip -->
+  data-duration="5"      <!-- secondes -->
+  data-track-index="1"   <!-- même track = pas de chevauchement -->
+></div>
+```
+
+## Structure composition
+
+```html
+<!-- Sub-composition : dans <template> -->
+<template id="my-comp-template">
+  <div data-composition-id="my-comp" data-width="1920" data-height="1080">
+    <style>[data-composition-id="my-comp"] { ... }</style>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      // tweens...
+      window.__timelines["my-comp"] = tl;
+    </script>
+  </div>
+</template>
+```
+
+## Checklist de sortie
+- `npx hyperframes lint` et `npx hyperframes validate` passent
+- `npx hyperframes inspect` passent (ou overflow marqué intentionnel)
+- Contraste WCAG AA vérifié
+
+## Commandes CLI
+```bash
+npx hyperframes init       # initialiser un projet
+npx hyperframes preview    # prévisualiser
+npx hyperframes render     # rendre en vidéo
+npx hyperframes lint       # vérifier la syntaxe
+npx hyperframes validate   # vérifier contraste + structure
+npx hyperframes inspect    # détecter les overflow visuels
+```
+
+## Install
+```bash
+npm i -g @hyperframes/cli
+```

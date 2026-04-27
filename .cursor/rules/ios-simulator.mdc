@@ -1,0 +1,98 @@
+---
+description: iOS Simulator — 22 scripts de production pour tester, builder et automatiser des apps iOS. Navigation UI sémantique, automatisation de build, tests d'accessibilité, gestion du cycle de vie du simulateur. Utiliser pour builder des apps Xcode, lancer le simulateur, interagir avec l'UI, tester les permissions, envoyer des push notifications, inspecter les Core Data/SwiftData models.
+globs: ["**/*.swift", "**/*.xcodeproj/**", "**/*.xcworkspace/**", "**/Podfile"]
+alwaysApply: false
+---
+
+# iOS Simulator Skill
+
+Builder, tester et automatiser des apps iOS avec navigation accessibility-driven et données structurées au lieu de coordonnées pixel.
+
+## Quick Start
+
+```bash
+# 1. Vérifier l'environnement
+bash scripts/sim_health_check.sh
+
+# 2. Lancer l'app
+python scripts/app_launcher.py --launch com.example.app
+
+# 3. Mapper l'écran (voir les éléments)
+python scripts/screen_mapper.py
+
+# 4. Taper un bouton
+python scripts/navigator.py --find-text "Login" --tap
+
+# 5. Entrer du texte
+python scripts/navigator.py --find-type TextField --enter-text "user@example.com"
+```
+
+## Stratégie de navigation (par ordre de priorité)
+
+1. `screen_mapper.py` → liste d'éléments structurée (5-7 lignes, ~10 tokens)
+2. `navigator.py --find-text/--find-type/--find-id` → interaction sémantique
+3. Screenshots → uniquement pour vérification visuelle, bug reports, ou diff visuel
+
+⚠️ Screenshots coûtent 1600-6300 tokens. L'accessibility tree coûte 10-50 tokens.
+
+## 22 Scripts de production
+
+### Build & Dev
+- `build_and_test.py` — Builder projets Xcode, lancer les tests, parser les résultats
+- `log_monitor.py` — Monitoring logs temps réel avec filtrage intelligent
+
+### Navigation & Interaction
+- `screen_mapper.py` — Analyser l'écran actuel, lister les éléments interactifs
+- `navigator.py` — Trouver et interagir sémantiquement (text, type, accessibility ID)
+- `gesture.py` — Swipes, scrolls, pinch, long press, pull to refresh
+- `keyboard.py` — Input texte, touches spéciales, boutons hardware
+- `app_launcher.py` — Cycle de vie app (launch, terminate, install, deep link)
+
+### Testing & Analyse
+- `accessibility_audit.py` — Compliance WCAG sur l'écran actuel
+- `visual_diff.py` — Comparaison screenshots pixel-par-pixel
+- `test_recorder.py` — Documenter l'exécution des tests avec screenshots
+- `app_state_capture.py` — Snapshots de debug complets
+- `sim_health_check.sh` — Vérifier que l'environnement est correctement configuré
+- `model_inspector.py` — Inspecter les models Core Data et SwiftData
+
+### Tests avancés & Permissions
+- `clipboard.py` — Gérer le clipboard du simulateur
+- `status_bar.py` — Override de la status bar (clean, testing, low-battery, airplane)
+- `push_notification.py` — Envoyer des push notifications simulées
+- `privacy_manager.py` — Grant/revoke/reset permissions (camera, micro, location, contacts...)
+
+### Cycle de vie du device
+- `simctl_boot.py` — Booter des simulateurs avec vérification readiness
+- `simctl_shutdown.py` — Arrêter gracieusement des simulateurs
+- `simctl_create.py` — Créer des simulateurs dynamiquement
+- `simctl_delete.py` — Supprimer des simulateurs (avec confirmation sécurité)
+- `simctl_erase.py` — Factory reset sans suppression (plus rapide)
+
+## Workflow typique
+
+```bash
+bash scripts/sim_health_check.sh
+python scripts/app_launcher.py --launch com.example.app
+python scripts/screen_mapper.py
+python scripts/navigator.py --find-text "Button" --tap
+python scripts/accessibility_audit.py
+python scripts/app_state_capture.py --app-bundle-id com.example.app
+```
+
+## Options communes
+- `--help` sur tous les scripts pour les options détaillées
+- `--json` pour output machine-readable (CI/CD)
+- `--udid` ou `--name` pour cibler un simulateur précis (auto-détecté si non précisé)
+- `--all` pour opérations batch sur tous les simulateurs
+
+## Tailles screenshots (tokens)
+- `quarter` → ~800 tokens — vérification rapide
+- `half` → ~1600 tokens — UI lisible (défaut)
+- `full` → ~5000 tokens — détail pixel-level uniquement si nécessaire
+
+## Prérequis
+- macOS 12+
+- Xcode Command Line Tools
+- Python 3
+- IDB (optionnel, pour fonctionnalités interactives)

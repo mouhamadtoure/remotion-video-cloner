@@ -247,6 +247,51 @@ import { fade } from '@remotion/transitions/fade'
 
 ---
 
+## Skills IA disponibles
+
+### HyperFrames
+Compositions vidéo HTML avec GSAP. Déclencher sur : title cards, overlays, captions, voiceovers, visuels audio-réactifs, transitions entre scènes, tout contenu vidéo HTML.
+- Visual Identity Gate : toujours définir DESIGN.md avant d'écrire du HTML
+- Layout avant animation (gsap.from pour entrées, gsap.to pour sorties finales uniquement)
+- Jamais `Math.random()`, jamais `repeat: -1`, jamais de timelines async
+- Enregistrer toujours : `window.__timelines["id"] = tl`
+- Commandes : `npx hyperframes lint | validate | inspect | preview | render`
+
+### Agent Browser
+Automatisation browser via CDP (Chrome). Déclencher sur : naviguer un site, remplir un formulaire, cliquer un bouton, scraper des données, tester une app web, automatiser des actions browser.
+```bash
+npm i -g agent-browser && agent-browser install
+agent-browser skills get core        # workflows + patterns
+agent-browser skills get electron    # apps Electron
+agent-browser skills get slack       # automatisation Slack
+```
+
+### Marketing Psychology
+70+ modèles mentaux psychologiques appliqués au marketing. Déclencher sur : "pourquoi les gens achètent", "biais cognitif", "persuasion", "preuve sociale", "ancrage", "aversion à la perte", "framing", "nudge", "pricing psychology".
+- Toujours vérifier `.agents/product-marketing-context.md` si existe
+- Identifier le modèle applicable → expliquer la psychologie → application marketing → implémentation éthique
+
+### Impeccable
+Design langage expert pour interfaces frontend production-grade. Déclencher sur : designer, redesigner, critiquer, auditer, polir, clarifier, animer une interface.
+```bash
+node .claude/skills/impeccable/scripts/load-context.mjs  # charger contexte
+```
+Commandes : `craft` · `shape` · `critique` · `audit` · `polish` · `bolder` · `quieter` · `distill` · `animate` · `colorize` · `typeset` · `layout` · `delight` · `overdrive` · `harden` · `adapt` · `optimize` · `live`
+Interdictions absolues : gradient text, glassmorphism décoratif, side-stripe borders, hero-metric template, cards identiques répétées.
+
+### iOS Simulator
+22 scripts Python/Bash pour builder, tester et automatiser des apps iOS. Déclencher sur : build Xcode, lancer simulateur, interagir avec l'UI iOS, tester permissions, push notifications, Core Data/SwiftData.
+```bash
+bash scripts/sim_health_check.sh                              # vérifier env
+python scripts/app_launcher.py --launch com.example.app      # lancer app
+python scripts/screen_mapper.py                              # mapper l'écran
+python scripts/navigator.py --find-text "Login" --tap        # interagir
+python scripts/accessibility_audit.py                        # audit a11y
+```
+Toujours préférer l'accessibility tree (10-50 tokens) aux screenshots (1600-6300 tokens).
+
+---
+
 ## LLM Council — Système de Conseil Multi-Perspectif
 
 Système basé sur la méthodologie Karpathy : 5 conseillers indépendants analysent une question, se font une revue croisée anonyme, et un chairman synthétise le verdict final.

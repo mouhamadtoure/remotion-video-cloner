@@ -1,0 +1,99 @@
+---
+description: Marketing Psychology — Appliquer les principes psychologiques, modèles mentaux et science comportementale au marketing. Utiliser quand l'utilisateur mentionne psychologie, biais cognitifs, persuasion, science comportementale, pourquoi les gens achètent, prise de décision, comportement consommateur, ancrage, preuve sociale, rareté, aversion à la perte, framing, nudge, ou veut comprendre/influencer comment les gens pensent.
+globs:
+alwaysApply: false
+---
+
+# Marketing Psychology & Mental Models
+
+Expert en application des principes psychologiques et modèles mentaux au marketing. Aide à comprendre pourquoi les gens achètent, comment influencer le comportement éthiquement, et comment prendre de meilleures décisions marketing.
+
+## Comment utiliser
+1. Vérifier si `.agents/product-marketing-context.md` existe → le lire pour contextualiser
+2. Identifier quels modèles mentaux s'appliquent à la situation
+3. Expliquer la psychologie derrière le modèle
+4. Fournir des applications marketing spécifiques
+5. Suggérer comment implémenter éthiquement
+
+---
+
+## Modèles fondamentaux de pensée stratégique
+
+| Modèle | Application marketing |
+|--------|----------------------|
+| **First Principles** | Ne pas copier les concurrents — demander "pourquoi" en boucle |
+| **Jobs to Be Done** | Vendre le trou, pas la perceuse — l'outcome, pas la feature |
+| **Inversion** | Lister tout ce qui garantirait l'échec → l'éviter |
+| **Pareto 80/20** | 20% des canaux = 80% des résultats → couper le reste |
+| **Theory of Constraints** | Trouver le bottleneck avant d'optimiser autre chose |
+| **Second-Order Thinking** | Flash sale → revenus (ordre 1) mais clients conditionnés aux promo (ordre 2) |
+
+---
+
+## Psychologie des acheteurs
+
+| Biais | Application |
+|-------|-------------|
+| **Mere Exposure** | Présence cohérente = familiarité = préférence |
+| **Confirmation Bias** | Aligner les messages sur ce que le public croit déjà |
+| **Mimetic Desire** | Waitlists, exclusivité, "les gens comme vous veulent ça" |
+| **Endowment Effect** | Essais gratuits → le client "possède" déjà le produit |
+| **IKEA Effect** | Personnalisation → investissement → valeur perçue accrue |
+| **Hyperbolic Discounting** | "Gagnez du temps dès aujourd'hui" > "ROI en 6 mois" |
+| **Status-Quo Bias** | Réduire la friction de switch — "importez en 1 clic" |
+| **Paradox of Choice** | 3 tiers max. Recommander 1 option "pour la plupart" |
+| **Goal-Gradient** | Barres de progression, "vous êtes à 80%" |
+| **Peak-End Rule** | Créer des pics mémorables + finir fort |
+| **Zeigarnik Effect** | "Profil incomplet", panier abandonné — l'open loop crée la tension |
+
+---
+
+## Persuasion & influence
+
+| Principe | Application |
+|----------|-------------|
+| **Réciprocité** | Donner de la valeur avant de demander quoi que ce soit |
+| **Engagement/Consistance** | Petits engagements d'abord (email → essai → achat) |
+| **Autorité** | Endorsements d'experts, certifications, "vu dans..." |
+| **Rareté/Urgence** | Offres limitées, stock bas — uniquement si réel |
+| **Loss Aversion** | "Ne ratez pas" > "vous pourriez gagner" |
+| **Anchoring** | Montrer le prix élevé en premier |
+| **Decoy Effect** | 3ème option inférieure → la cible devient le choix évident |
+| **Framing** | "90% de réussite" > "10% d'échec" — même donnée |
+
+---
+
+## Psychologie des prix
+
+| Technique | Règle |
+|-----------|-------|
+| **Charm pricing** | $99 vs $100 — le chiffre de gauche domine |
+| **Premium pricing** | Prix ronds ($500) signale qualité |
+| **Rule of 100** | <$100 → % de réduction. >$100 → montant absolu |
+| **Good-Better-Best** | Tier du milieu = cible. Le cher le rend raisonnable |
+| **Mental accounting** | "$1/jour" < "$30/mois" — même prix, perception différente |
+
+---
+
+## Référence rapide par challenge
+
+| Challenge | Modèles à appliquer |
+|-----------|---------------------|
+| Conversions faibles | Hick's Law, Activation Energy, BJ Fogg, friction |
+| Objections prix | Anchoring, Framing, Mental Accounting, Loss Aversion |
+| Construire la confiance | Authority, Social Proof, Reciprocity, Pratfall Effect |
+| Urgence | Scarcity, Loss Aversion, Zeigarnik Effect |
+| Rétention/churn | Endowment Effect, Switching Costs, Status-Quo Bias |
+| Croissance bloquée | Theory of Constraints, Pareto, Compounding |
+| Paralysie décisionnelle | Paradox of Choice, Default Effect, Nudge Theory |
+| Onboarding | Goal-Gradient, IKEA Effect, Commitment & Consistency |
+
+---
+
+## Questions à poser
+
+1. Quel comportement spécifique cherches-tu à influencer ?
+2. Que croit le client avant de rencontrer ton marketing ?
+3. Où dans le parcours (awareness → consideration → decision) est-il ?
+4. Qu'est-ce qui empêche actuellement l'action souhaitée ?
+5. As-tu testé ça avec de vrais clients ?
