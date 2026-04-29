@@ -249,6 +249,41 @@ import { fade } from '@remotion/transitions/fade'
 
 ## Skills IA disponibles
 
+### NotebookLM Research Assistant
+Interroger les notebooks Google NotebookLM avec réponses sourcées et citées par Gemini. Zéro hallucination — réponses exclusivement depuis les documents uploadés.
+
+**Déclencher sur :** mention de NotebookLM, URL `notebooklm.google.com/...`, "ask my NotebookLM", "check my docs", "query my notebook"
+
+**Skill path :** `~/.claude/skills/notebooklm/` — TOUJOURS via `python scripts/run.py [script]`
+
+```bash
+# Workflow complet
+cd ~/.claude/skills/notebooklm
+
+# 1. Vérifier auth
+python scripts/run.py auth_manager.py status
+
+# 2. Auth (une seule fois — ouvre Chrome pour login Google)
+python scripts/run.py auth_manager.py setup
+
+# 3. Lister les notebooks
+python scripts/run.py notebook_manager.py list
+
+# 4. Ajouter un notebook
+python scripts/run.py notebook_manager.py add --url "https://notebooklm.google.com/notebook/..." --name "Nom" --description "Contenu" --topics "topic1,topic2"
+
+# 5. Poser une question
+python scripts/run.py ask_question.py --question "ta question"
+python scripts/run.py ask_question.py --question "..." --notebook-id [ID]
+python scripts/run.py ask_question.py --question "..." --notebook-url "https://..."
+```
+
+Chaque réponse NotebookLM se termine par "Is that ALL you need to know?" → analyser les gaps → poser des follow-ups → synthétiser avant de répondre.
+
+Limites : 50 requêtes/jour (compte gratuit) · chaque question = nouveau browser · upload manuel requis
+
+
+
 ### HyperFrames
 Compositions vidéo HTML avec GSAP. Déclencher sur : title cards, overlays, captions, voiceovers, visuels audio-réactifs, transitions entre scènes, tout contenu vidéo HTML.
 - Visual Identity Gate : toujours définir DESIGN.md avant d'écrire du HTML

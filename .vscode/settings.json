@@ -1,0 +1,11 @@
+{
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": ".github/copilot-instructions.md"
+    }
+  ],
+  "github.copilot.chat.commitMessageGeneration.instructions": [],
+  "github.copilot.enable": {
+    "*": true
+  }
+}

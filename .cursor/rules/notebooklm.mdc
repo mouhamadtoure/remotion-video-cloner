@@ -1,0 +1,84 @@
+---
+description: NotebookLM — Interroger les notebooks Google NotebookLM avec des réponses sourcées et citées par Gemini. Déclencher quand l'utilisateur mentionne NotebookLM, partage une URL notebooklm.google.com, veut interroger ses notebooks/documentation, ou utilise "ask my NotebookLM", "check my docs", "query my notebook".
+globs:
+alwaysApply: false
+---
+
+# NotebookLM Research Assistant
+
+Interagir avec Google NotebookLM pour obtenir des réponses sourcées depuis les documents uploadés. Zéro hallucination — les réponses viennent exclusivement des notebooks de l'utilisateur.
+
+## Skill path
+Tous les scripts sont dans : `~/.claude/skills/notebooklm/`
+**TOUJOURS utiliser `python scripts/run.py [script]`** — jamais les scripts directement.
+
+## Workflow standard
+
+### 1. Vérifier l'auth
+```bash
+cd ~/.claude/skills/notebooklm && python scripts/run.py auth_manager.py status
+```
+
+### 2. Si non authentifié (une seule fois)
+```bash
+cd ~/.claude/skills/notebooklm && python scripts/run.py auth_manager.py setup
+```
+→ Une fenêtre Chrome s'ouvre → l'utilisateur se connecte à Google → session sauvegardée
+
+### 3. Gérer les notebooks
+```bash
+cd ~/.claude/skills/notebooklm
+
+# Lister tous les notebooks
+python scripts/run.py notebook_manager.py list
+
+# Ajouter un notebook (smart discovery)
+python scripts/run.py ask_question.py --question "What is the content of this notebook? Overview briefly" --notebook-url "[URL]"
+python scripts/run.py notebook_manager.py add --url "[URL]" --name "[nom]" --description "[desc]" --topics "[topics]"
+
+# Activer un notebook
+python scripts/run.py notebook_manager.py activate --id [ID]
+
+# Rechercher
+python scripts/run.py notebook_manager.py search --query "keyword"
+```
+
+### 4. Poser une question
+```bash
+cd ~/.claude/skills/notebooklm
+
+# Notebook actif
+python scripts/run.py ask_question.py --question "ta question"
+
+# Notebook spécifique
+python scripts/run.py ask_question.py --question "..." --notebook-id [ID]
+
+# Via URL directe
+python scripts/run.py ask_question.py --question "..." --notebook-url "https://notebooklm.google.com/notebook/..."
+```
+
+## Mécanisme de suivi (CRITIQUE)
+
+Chaque réponse NotebookLM se termine par **"Is that ALL you need to know?"**
+→ Analyser les gaps → poser des questions de suivi → synthétiser avant de répondre à l'utilisateur
+
+## Référence commandes auth
+```bash
+python scripts/run.py auth_manager.py setup    # Setup initial
+python scripts/run.py auth_manager.py status   # Vérifier l'auth
+python scripts/run.py auth_manager.py reauth   # Re-authentifier
+python scripts/run.py auth_manager.py clear    # Effacer l'auth
+```
+
+## Dépannage
+| Problème | Solution |
+|----------|----------|
+| ModuleNotFoundError | Utiliser run.py (jamais les scripts directement) |
+| Auth échoue | Le browser doit être visible : `--show-browser` |
+| Rate limit (50/jour) | Attendre ou changer de compte Google |
+| Browser crash | `python scripts/run.py cleanup_manager.py --preserve-library` |
+
+## Limites
+- Pas de persistance de session (chaque question = nouveau browser)
+- Rate limit sur comptes gratuits : 50 requêtes/jour
+- Upload manuel requis (l'utilisateur doit ajouter ses docs dans NotebookLM)
